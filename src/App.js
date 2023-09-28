@@ -30,9 +30,33 @@ function App() {
 		setDeck(generateDeck());
 	}, [setDeck]);
 
+	const pickCard = (cardIndex) => {
+		if (deck[cardIndex].isFlipped === true) {
+			return;
+		}
+		let cardToFlip = { ...deck[cardIndex] };
+		cardToFlip.isFlipped = true;
+
+		let newPickedCards = pickedCards.concat(cardIndex);
+		let newDeck = deck.map((card, index) => {
+			if (cardIndex === index) {
+				return cardToFlip;
+			}
+			return card;
+		});
+
+		setDeck(newDeck);
+		setPickedCards(newPickedCards);
+	};
+
 	let cardsJSX = deck.map((card, index) => {
 		return (
-			<MemoryCard symbol={card.symbol} isFlipped={card.isFlipped} key={index} />
+			<MemoryCard
+				symbol={card.symbol}
+				isFlipped={card.isFlipped}
+				key={index}
+				pickCard={() => pickCard(index)}
+			/>
 		);
 	});
 
