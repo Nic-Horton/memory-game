@@ -45,8 +45,34 @@ function App() {
 			return card;
 		});
 
+		if (newPickedCards.length === 2) {
+			const card1Index = newPickedCards[0];
+			const card2Index = newPickedCards[1];
+			if (newDeck[card1Index].symbol !== newDeck[card2Index].symbol) {
+				setTimeout(() => unflipCards(card1Index, card2Index), 1000);
+			}
+			newPickedCards = [];
+		}
+
 		setDeck(newDeck);
 		setPickedCards(newPickedCards);
+	};
+
+	const unflipCards = (card1Index, card2Index) => {
+		const card1 = { ...deck[card1Index] };
+		const card2 = { ...deck[card2Index] };
+		card1.isFlipped = false;
+		card2.isFlipped = false;
+		let newDeck = deck.map((card, index) => {
+			if (card1Index === index) {
+				return card1;
+			}
+			if (card2Index === index) {
+				return card2;
+			}
+			return card;
+		});
+		setDeck(newDeck);
 	};
 
 	let cardsJSX = deck.map((card, index) => {
